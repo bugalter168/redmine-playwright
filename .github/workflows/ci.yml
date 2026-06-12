@@ -1,0 +1,76 @@
+name: Playwright Tests + Allure Report
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  test:
+    name: Run Tests & Publish Allure Report
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      # 4. Install Playwright browsers
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      # 5. Run tests
+      - name: Run Playwright tests
+        run: npm test
+        continue-on-error: true   # always generate report even if tests fail
+
+      # 6. Restore previous Allure history from gh-pages
+      - name: Get Allure history from gh-pages
+        uses: actions/checkout@v4
+        if: always()
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Copy Allure history
+        if: always()
+        continue-on-error: true
+        run: |
+          mkdir -p allure-results/history
+          cp -r gh-pages/history/. allure-results/history/ 2>/dev/null || true
+
+      # 7. Generate Allure report
+      - name: Generate Allure report
+        if: always()
+        uses: simple-elf/allure-report-action@master
+        with:
+          allure_results: allure-results
+          allure_history: allure-history
+          keep_reports: 20
+
+      # 8. Push Allure report to gh-pages
+      - name: Publish Allure report to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-history
