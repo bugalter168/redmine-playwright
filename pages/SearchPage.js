@@ -6,7 +6,7 @@ class SearchPage extends BasePage {
   constructor(page) {
     super(page);
 
-    this.searchInput  = '#q';
+    this.searchInput = '#q';
     this.resultsItems = '#search-results dt';
   }
 

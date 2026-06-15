@@ -6,10 +6,10 @@ class LoginPage extends BasePage {
   constructor(page) {
     super(page);
 
-    this.loginInput    = '#username';
+    this.loginInput = '#username';
     this.passwordInput = '#password';
-    this.submitButton  = 'input[type="submit"]';
-    this.errorMessage  = '#flash_error';
+    this.submitButton = 'input[type="submit"]';
+    this.errorMessage = '#flash_error';
   }
 
   async goto() {

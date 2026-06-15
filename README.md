@@ -8,14 +8,14 @@ End-to-end test suite for [redmine.org](https://www.redmine.org/) built with **P
 
 ## 2. Tech Stack
 
-| Tool | Purpose |
-|---|---|
-| [Playwright](https://playwright.dev/) | Browser automation |
-| JavaScript (Node.js) | Test language |
-| [allure-playwright](https://www.npmjs.com/package/allure-playwright) | Test reporting |
-| [Allure CLI](https://docs.qameta.io/allure/) | Report generation |
-| GitHub Actions | CI/CD pipeline |
-| GitHub Pages | Live report hosting |
+| Tool                                                                 | Purpose             |
+| -------------------------------------------------------------------- | ------------------- |
+| [Playwright](https://playwright.dev/)                                | Browser automation  |
+| JavaScript (Node.js)                                                 | Test language       |
+| [allure-playwright](https://www.npmjs.com/package/allure-playwright) | Test reporting      |
+| [Allure CLI](https://docs.qameta.io/allure/)                         | Report generation   |
+| GitHub Actions                                                       | CI/CD pipeline      |
+| GitHub Pages                                                         | Live report hosting |
 
 ---
 
@@ -60,6 +60,7 @@ npx playwright test tests/login.spec.js
 ```
 
 Test results (screenshots, videos on failure) are saved to:
+
 - `test-results/` — Playwright artifacts
 - `allure-results/` — raw Allure data
 
@@ -81,6 +82,7 @@ This runs `allure generate allure-results --clean -o allure-report` then opens t
 The pipeline is defined in `.github/workflows/ci.yml` and triggers on every `push` or `pull_request` to the `main` branch.
 
 **Steps:**
+
 1. Checkout repository
 2. Set up Node.js 20
 3. Install dependencies (`npm ci`)
@@ -129,6 +131,7 @@ redmine-playwright/
 ```
 
 **Architecture principles:**
+
 - All locators live exclusively inside `pages/` — spec files contain zero locators.
 - `BasePage.js` provides `navigate()`, `waitForElement()`, `getTitle()`, and `getCurrentUrl()` for all page objects to inherit.
 - Each spec file maps 1-to-1 to a test case in the test plan.

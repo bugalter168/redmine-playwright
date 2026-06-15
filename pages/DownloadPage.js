@@ -6,11 +6,11 @@ class DownloadPage extends BasePage {
   constructor(page) {
     super(page);
 
-    this.pageHeading           = '#content h1';
-    this.latestReleasesAnchor  = 'h2:has-text("Latest releases")';
-    this.tarGzLinks            = 'a[href$=".tar.gz"]';
-    this.zipLinks              = 'a[href$=".zip"]';
-    this.supportTable          = 'table';
+    this.pageHeading = '#content h1';
+    this.latestReleasesAnchor = 'h2:has-text("Latest releases")';
+    this.tarGzLinks = 'a[href$=".tar.gz"]';
+    this.zipLinks = 'a[href$=".zip"]';
+    this.supportTable = 'table';
   }
 
   async goto() {

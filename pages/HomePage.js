@@ -6,11 +6,11 @@ class HomePage extends BasePage {
   constructor(page) {
     super(page);
 
-    this.homeLink     = '#top-menu a.home';
+    this.homeLink = '#top-menu a.home';
     this.projectsLink = '#top-menu a.projects';
-    this.helpLink     = '#top-menu a.help';
-    this.signInLink   = '#top-menu a.login';
-    this.mainHeading  = 'h1';
+    this.helpLink = '#top-menu a.help';
+    this.signInLink = '#top-menu a.login';
+    this.mainHeading = 'h1';
   }
 
   async goto() {
