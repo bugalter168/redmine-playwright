@@ -1,10 +1,8 @@
-'use strict';
-
-const { test: base, expect } = require('@playwright/test');
-const LoginPage = require('../pages/LoginPage');
-const HomePage = require('../pages/HomePage');
-const SearchPage = require('../pages/SearchPage');
-const DownloadPage = require('../pages/DownloadPage');
+import { test as base, expect } from '@playwright/test';
+import { LoginPage } from '../pages/LoginPage.js';
+import { HomePage } from '../pages/HomePage.js';
+import { SearchPage } from '../pages/SearchPage.js';
+import { DownloadPage } from '../pages/DownloadPage.js';
 
 const testData = {
   login: {
@@ -44,4 +42,4 @@ const test = base.extend({
   },
 });
 
-module.exports = { test, expect };
+export { test, expect };

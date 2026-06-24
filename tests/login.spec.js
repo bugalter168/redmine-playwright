@@ -1,10 +1,8 @@
-'use strict';
-
-const { test, expect } = require('../fixtures');
-const { allure } = require('allure-playwright');
+import { test, expect } from "../fixtures/index.js";
+import { allure } from "allure-playwright";
 
 test.describe('Login', () => {
-  test('C001 - Login with invalid credentials', async ({ loginPage, testData }) => {
+  test('C001 - Verify that login with invalid credentials shows an error', async ({ loginPage, testData }) => {
     allure.label('severity', 'critical');
     allure.label('feature', 'Login');
     allure.label('story', 'Invalid credentials');
@@ -28,7 +26,7 @@ test.describe('Login', () => {
     });
   });
 
-  test('C002 - Login with empty fields', async ({ loginPage, testData }) => {
+  test('C002 - Verify that submitting empty fields shows an error', async ({ loginPage, testData }) => {
     allure.label('severity', 'normal');
     allure.label('feature', 'Login');
     allure.label('story', 'Empty credentials');

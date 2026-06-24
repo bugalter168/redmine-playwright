@@ -1,8 +1,5 @@
-'use strict';
-
-const BasePage = require('./BasePage');
-
-class SearchPage extends BasePage {
+import { BasePage } from "./BasePage.js";
+export class SearchPage extends BasePage {
   constructor(page) {
     super(page);
 
@@ -26,5 +23,3 @@ class SearchPage extends BasePage {
     return this.getCurrentUrl().includes('/search');
   }
 }
-
-module.exports = SearchPage;

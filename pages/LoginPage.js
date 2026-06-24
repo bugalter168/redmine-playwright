@@ -1,8 +1,6 @@
-'use strict';
+import { BasePage } from "./BasePage.js";
 
-const BasePage = require('./BasePage');
-
-class LoginPage extends BasePage {
+export class LoginPage extends BasePage {
   constructor(page) {
     super(page);
 
@@ -36,5 +34,3 @@ class LoginPage extends BasePage {
     }
   }
 }
-
-module.exports = LoginPage;

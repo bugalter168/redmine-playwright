@@ -1,8 +1,6 @@
-'use strict';
+import { BasePage } from "./BasePage.js";
 
-const BasePage = require('./BasePage');
-
-class HomePage extends BasePage {
+export class HomePage extends BasePage {
   constructor(page) {
     super(page);
 
@@ -27,5 +25,3 @@ class HomePage extends BasePage {
     return this.page.isVisible(selector);
   }
 }
-
-module.exports = HomePage;

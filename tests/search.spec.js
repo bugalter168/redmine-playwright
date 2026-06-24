@@ -1,9 +1,7 @@
-'use strict';
+import { test, expect } from '../fixtures/index.js';
+import { allure } from 'allure-playwright';
 
-const { test, expect } = require('../fixtures');
-const { allure } = require('allure-playwright');
-
-test('C004 - Search for a keyword returns results', async ({ homePage, searchPage, testData }) => {
+test('C004 - Verify that searching for a keyword returns results', async ({ homePage, searchPage, testData }) => {
   allure.label('severity', 'normal');
   allure.label('feature', 'Search');
   allure.label('story', 'Keyword search');

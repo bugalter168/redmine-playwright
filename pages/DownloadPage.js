@@ -1,8 +1,6 @@
-'use strict';
+import { BasePage } from "./BasePage.js";
 
-const BasePage = require('./BasePage');
-
-class DownloadPage extends BasePage {
+export class DownloadPage extends BasePage {
   constructor(page) {
     super(page);
 
@@ -34,5 +32,3 @@ class DownloadPage extends BasePage {
     return this.page.isVisible(this.supportTable);
   }
 }
-
-module.exports = DownloadPage;

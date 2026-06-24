@@ -1,9 +1,7 @@
-'use strict';
+import { test, expect } from '../fixtures/index.js';
+import { allure } from 'allure-playwright';
 
-const { test, expect } = require('../fixtures');
-const { allure } = require('allure-playwright');
-
-test('C003 - Homepage navigation structure', async ({ homePage, testData, page }) => {
+test('C003 - Verify that homepage navigation links are visible and functional', async ({ homePage, testData, page }) => {
   allure.label('severity', 'normal');
   allure.label('feature', 'Navigation');
   allure.label('story', 'Top nav links');

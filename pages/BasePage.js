@@ -1,6 +1,4 @@
-'use strict';
-
-class BasePage {
+export class BasePage {
   constructor(page) {
     this.page = page;
   }
@@ -22,4 +20,3 @@ class BasePage {
   }
 }
 
-module.exports = BasePage;
