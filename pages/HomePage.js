@@ -1,27 +1,40 @@
-import { BasePage } from "./BasePage.js";
+import { BasePage } from './BasePage.js';
 
 export class HomePage extends BasePage {
   constructor(page) {
     super(page);
 
-    this.homeLink = '#top-menu a.home';
-    this.projectsLink = '#top-menu a.projects';
-    this.helpLink = '#top-menu a.help';
-    this.signInLink = '#top-menu a.login';
-    this.mainHeading = 'h1';
+    const topMenu = page.locator('#top-menu');
+    this.homeLink = topMenu.getByRole('link', { name: 'Home' });
+    this.projectsLink = topMenu.getByRole('link', { name: 'Projects' });
+    this.helpLink = topMenu.getByRole('link', { name: 'Help' });
+    this.signInLink = topMenu.getByRole('link', { name: 'Sign in' });
+    this.mainHeading = page.locator('#header h1');
   }
 
   async goto() {
     await this.navigate('/');
-    await this.waitForElement(this.mainHeading);
+    await this.mainHeading.waitFor({ state: 'visible' });
   }
 
   async clickProjects() {
-    await this.page.click(this.projectsLink);
+    await this.projectsLink.click();
     await this.page.waitForURL('**/projects');
   }
 
-  async isNavLinkVisible(selector) {
-    return this.page.isVisible(selector);
+  async isHomeLinkVisible() {
+    return this.homeLink.isVisible();
+  }
+
+  async isProjectsLinkVisible() {
+    return this.projectsLink.isVisible();
+  }
+
+  async isHelpLinkVisible() {
+    return this.helpLink.isVisible();
+  }
+
+  async isSignInLinkVisible() {
+    return this.signInLink.isVisible();
   }
 }

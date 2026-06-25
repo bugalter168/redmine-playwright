@@ -1,34 +1,36 @@
-import { BasePage } from "./BasePage.js";
+import { BasePage } from './BasePage.js';
 
 export class DownloadPage extends BasePage {
   constructor(page) {
     super(page);
 
-    this.pageHeading = '#content h1';
-    this.latestReleasesAnchor = 'h2:has-text("Latest releases")';
-    this.tarGzLinks = 'a[href$=".tar.gz"]';
-    this.zipLinks = 'a[href$=".zip"]';
-    this.supportTable = 'table';
+    this.pageHeading = page.locator('#content h1');
+    this.latestReleasesSection = page
+      .locator('#content')
+      .getByRole('heading', { name: 'Latest releases' });
+    this.tarGzLinks = page.locator('#content a[href$=".tar.gz"]');
+    this.zipLinks = page.locator('#content a[href$=".zip"]');
+    this.supportTable = page.locator('#content table').first();
   }
 
   async goto() {
     await this.navigate('/projects/redmine/wiki/Download');
-    await this.waitForElement(this.pageHeading);
+    await this.pageHeading.waitFor({ state: 'visible' });
   }
 
   async isLatestReleasesVisible() {
-    return this.page.isVisible(this.latestReleasesAnchor);
+    return this.latestReleasesSection.isVisible();
   }
 
   async getTarGzLinkCount() {
-    return this.page.locator(this.tarGzLinks).count();
+    return this.tarGzLinks.count();
   }
 
   async getZipLinkCount() {
-    return this.page.locator(this.zipLinks).count();
+    return this.zipLinks.count();
   }
 
   async isSupportTableVisible() {
-    return this.page.isVisible(this.supportTable);
+    return this.supportTable.isVisible();
   }
 }

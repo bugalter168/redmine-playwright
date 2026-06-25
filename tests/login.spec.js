@@ -1,5 +1,5 @@
-import { test, expect } from "../fixtures/index.js";
-import { allure } from "allure-playwright";
+import { test, expect } from '../fixtures/index.js';
+import { allure } from 'allure-playwright';
 
 test.describe('Login', () => {
   test('C001 - Verify that login with invalid credentials shows an error', async ({ loginPage, testData }) => {
@@ -30,9 +30,7 @@ test.describe('Login', () => {
     allure.label('severity', 'normal');
     allure.label('feature', 'Login');
     allure.label('story', 'Empty credentials');
-    allure.description(
-      'Verify that submitting empty form triggers "Invalid user or password" error.'
-    );
+    allure.description('Verify that submitting empty form triggers "Invalid user or password" error.');
 
     await test.step('Navigate to login page', async () => {
       await loginPage.goto();

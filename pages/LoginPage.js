@@ -1,34 +1,34 @@
-import { BasePage } from "./BasePage.js";
+import { BasePage } from './BasePage.js';
 
 export class LoginPage extends BasePage {
   constructor(page) {
     super(page);
 
-    this.loginInput = '#username';
-    this.passwordInput = '#password';
-    this.submitButton = 'input[type="submit"]';
-    this.errorMessage = '#flash_error';
+    this.loginInput = page.getByLabel('Login');
+    this.passwordInput = page.getByLabel('Password');
+    this.submitButton = page.getByRole('button', { name: 'Login' });
+    this.errorMessage = page.locator('#flash_error');
   }
 
   async goto() {
     await this.navigate('/login');
-    await this.waitForElement(this.loginInput);
+    await this.loginInput.waitFor({ state: 'visible' });
   }
 
   async login(username, password) {
-    await this.page.fill(this.loginInput, username);
-    await this.page.fill(this.passwordInput, password);
-    await this.page.click(this.submitButton);
+    await this.loginInput.fill(username);
+    await this.passwordInput.fill(password);
+    await this.submitButton.click();
   }
 
   async submitEmpty() {
-    await this.page.click(this.submitButton);
+    await this.submitButton.click();
   }
 
   async getErrorMessage() {
     try {
-      await this.waitForElement(this.errorMessage, 5000);
-      return this.page.textContent(this.errorMessage);
+      await this.errorMessage.waitFor({ state: 'visible', timeout: 5000 });
+      return this.errorMessage.textContent();
     } catch {
       return null;
     }

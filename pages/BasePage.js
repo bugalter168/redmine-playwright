@@ -7,10 +7,6 @@ export class BasePage {
     await this.page.goto(path);
   }
 
-  async waitForElement(selector, timeout = 10000) {
-    await this.page.waitForSelector(selector, { state: 'visible', timeout });
-  }
-
   async getTitle() {
     return this.page.title();
   }
@@ -19,4 +15,3 @@ export class BasePage {
     return this.page.url();
   }
 }
-

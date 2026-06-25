@@ -1,7 +1,10 @@
 import { test, expect } from '../fixtures/index.js';
 import { allure } from 'allure-playwright';
 
-test('C005 - Verify that download page shows latest release versions', async ({ downloadPage, testData }) => {
+test('C005 - Verify that Download page shows latest release versions', async ({
+  downloadPage,
+  testData,
+}) => {
   allure.label('severity', 'minor');
   allure.label('feature', 'Download');
   allure.label('story', 'Release listing');

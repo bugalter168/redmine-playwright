@@ -8,24 +8,20 @@ End-to-end test suite for [redmine.org](https://www.redmine.org/) built with **P
 
 ## 2. Tech Stack
 
-| Tool                                                                 | Purpose             |
-| -------------------------------------------------------------------- | ------------------- |
-| [Playwright](https://playwright.dev/)                                | Browser automation  |
-| JavaScript (Node.js)                                                 | Test language       |
-| [allure-playwright](https://www.npmjs.com/package/allure-playwright) | Test reporting      |
-| [Allure CLI](https://docs.qameta.io/allure/)                         | Report generation   |
-| GitHub Actions                                                       | CI/CD pipeline      |
-| GitHub Pages                                                         | Live report hosting |
+| Tool | Purpose |
+|---|---|
+| [Playwright](https://playwright.dev/) | Browser automation |
+| JavaScript (Node.js) | Test language |
+| [allure-playwright](https://www.npmjs.com/package/allure-playwright) | Test reporting |
+| [Allure CLI](https://docs.qameta.io/allure/) | Report generation |
+| GitHub Actions | CI/CD pipeline |
+| GitHub Pages | Live report hosting |
 
 ---
 
 ## 3. Prerequisites
 
 - **Node.js** ≥ 18 (LTS recommended) — [download](https://nodejs.org/)
-- **Allure CLI** (for local report generation):
-  ```bash
-  npm install -g allure-commandline
-  ```
 - **Git** — to clone the repository
 
 ---
@@ -34,10 +30,10 @@ End-to-end test suite for [redmine.org](https://www.redmine.org/) built with **P
 
 ```bash
 # Clone the repository
-git clone https://github.com/<your-username>/redmine-playwright-tests.git
-cd redmine-playwright-tests
+git clone https://github.com/<your-username>/redmine-playwright.git
+cd redmine-playwright
 
-# Install Node dependencies
+# Install Node dependencies (includes Allure CLI)
 npm ci
 
 # Install Playwright browser binaries
@@ -73,7 +69,7 @@ Test results (screenshots, videos on failure) are saved to:
 npm run report
 ```
 
-This runs `allure generate allure-results --clean -o allure-report` then opens the HTML report in your default browser.
+This runs `npx allure generate allure-results --clean -o allure-report` then opens the HTML report in your default browser.
 
 ---
 
@@ -84,13 +80,13 @@ The pipeline is defined in `.github/workflows/ci.yml` and triggers on every `pus
 **Steps:**
 
 1. Checkout repository
-2. Set up Node.js 20
+2. Set up Node.js 22
 3. Install dependencies (`npm ci`)
 4. Install Playwright browsers
 5. Run tests (`npm test`) — continues even if tests fail so the report is always generated
-6. Fetch Allure history from the `gh-pages` branch to preserve trend data across runs
-7. Generate Allure report (using `simple-elf/allure-report-action`)
-8. Publish the report to the `gh-pages` branch (using `peaceiris/actions-gh-pages`)
+6. Restore Allure history from the `gh-pages` branch to preserve trend data across runs
+7. Generate Allure report (`npx allure generate`)
+8. Publish the report to the `gh-pages` branch (`peaceiris/actions-gh-pages`)
 
 ---
 
@@ -98,7 +94,7 @@ The pipeline is defined in `.github/workflows/ci.yml` and triggers on every `pus
 
 After the first successful pipeline run, the Allure report is available at:
 
-**https://\<your-username\>.github.io/redmine-playwright-tests/**
+**https://\<your-username\>.github.io/redmine-playwright/**
 
 > To activate GitHub Pages: go to **Repository → Settings → Pages → Source → Deploy from branch → `gh-pages` / `/ (root)`**.  
 > Paste the live URL into the repository **Description** field for quick access.
@@ -109,30 +105,34 @@ After the first successful pipeline run, the Allure report is available at:
 
 ```
 redmine-playwright/
+├── fixtures/
+│   └── index.js                     # Custom fixtures: page objects & test data
 ├── pages/
-│   ├── BasePage.js          # Shared navigation & utility methods
-│   ├── LoginPage.js         # Login form locators & actions
-│   ├── HomePage.js          # Homepage nav locators & actions
-│   ├── SearchPage.js        # Search input & results locators
-│   └── DownloadPage.js      # Download page locators & assertions
+│   ├── BasePage.js                  # Shared navigation & utility methods
+│   ├── LoginPage.js                 # Login form locators & actions
+│   ├── HomePage.js                  # Homepage nav locators & actions
+│   ├── SearchPage.js                # Search input & results locators
+│   └── DownloadPage.js              # Download page locators & assertions
 ├── tests/
 │   ├── login.spec.js                # C001, C002 – Login tests
-│   ├── homepage-navigation.spec.js  # C003 – Homepage navigation structure
+│   ├── homepage-navigation.spec.js  # C003 – Homepage navigation
 │   ├── search.spec.js               # C004 – Search returns results
 │   └── download-page.spec.js        # C005 – Download page content
-├── allure-results/          # Raw results written by Playwright (git-ignored)
-├── allure-report/           # Generated HTML report (git-ignored)
+├── allure-results/                  # Raw results written by Playwright (git-ignored)
+├── allure-report/                   # Generated HTML report (git-ignored)
 ├── .github/
 │   └── workflows/
-│       └── ci.yml           # GitHub Actions pipeline
-├── playwright.config.js     # Playwright configuration
-├── package.json             # Dependencies & scripts
-└── README.md                # This file
+│       └── ci.yml                   # GitHub Actions pipeline
+├── playwright.config.js             # Playwright configuration
+├── package.json                     # Dependencies & scripts
+└── README.md                        # This file
 ```
 
 **Architecture principles:**
 
 - All locators live exclusively inside `pages/` — spec files contain zero locators.
-- `BasePage.js` provides `navigate()`, `waitForElement()`, `getTitle()`, and `getCurrentUrl()` for all page objects to inherit.
+- `BasePage.js` provides `navigate()`, `getTitle()`, and `getCurrentUrl()` for all page objects to inherit.
+- Page object constructors define locators as Playwright `Locator` objects using semantic locators (`getByRole`, `getByLabel`) where possible.
+- `fixtures/index.js` centralizes all test data and exposes page objects as Playwright fixtures — tests receive them via function parameters with no manual instantiation.
 - Each spec file maps 1-to-1 to a test case in the test plan.
 - Every test uses `test.step()` blocks for steps and `allure.label()` for metadata.

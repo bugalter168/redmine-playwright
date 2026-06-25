@@ -1,22 +1,22 @@
-import { BasePage } from "./BasePage.js";
+import { BasePage } from './BasePage.js';
 export class SearchPage extends BasePage {
   constructor(page) {
     super(page);
 
-    this.searchInput = '#q';
-    this.resultsItems = '#search-results dt';
+    this.searchInput = page.locator('#q');
+    this.resultsItems = page.locator('#search-results dt');
   }
 
   async search(query) {
-    await this.waitForElement(this.searchInput);
-    await this.page.fill(this.searchInput, query);
-    await this.page.press(this.searchInput, 'Enter');
+    await this.searchInput.waitFor({ state: 'visible' });
+    await this.searchInput.fill(query);
+    await this.searchInput.press('Enter');
     await this.page.waitForURL('**/search**');
   }
 
   async getResultCount() {
-    await this.waitForElement(this.resultsItems);
-    return this.page.locator(this.resultsItems).count();
+    await this.resultsItems.first().waitFor({ state: 'visible' });
+    return this.resultsItems.count();
   }
 
   isOnSearchPage() {
